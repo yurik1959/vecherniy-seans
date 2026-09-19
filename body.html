@@ -1,0 +1,166 @@
+<header class="top">
+  <div class="top-in">
+    <div class="logo">
+      <svg width="26" height="26" viewBox="0 0 26 26" fill="none" aria-hidden="true"><path d="M3 6.5A1.5 1.5 0 0 1 4.5 5h17A1.5 1.5 0 0 1 23 6.5v2.2a2.3 2.3 0 0 0 0 4.6v2.2a1.5 1.5 0 0 1-1.5 1.5h-17A1.5 1.5 0 0 1 3 15.5v-2.2a2.3 2.3 0 0 0 0-4.6z" fill="currentColor" transform="translate(0 2.5)"/><path d="M9.5 7.5v11" stroke="var(--bg)" stroke-width="1.6" stroke-dasharray="2 2"/></svg>
+      <span>Вечерний сеанс</span>
+    </div>
+    <nav class="nav" aria-label="Разделы">
+      <button type="button" data-tab="today" aria-current="page">Сегодня</button>
+      <button type="button" data-tab="catalog">Каталог</button>
+      <button type="button" data-tab="mine">Моё</button>
+    </nav>
+    <button type="button" class="icon-btn" id="theme-btn" aria-label="Сменить тему оформления" title="Светлая / тёмная тема">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2.5M12 19.5V22M4.2 4.2 6 6M18 18l1.8 1.8M2 12h2.5M19.5 12H22M4.2 19.8 6 18M18 6l1.8-1.8"/></svg>
+    </button>
+  </div>
+</header>
+
+<main>
+  <!-- СЕГОДНЯ -->
+  <section class="view" id="v-today" aria-labelledby="h-today">
+    <div>
+      <p class="eyebrow" id="today-date"></p>
+      <h1 class="h1" id="h-today">Что посмотреть сегодня</h1>
+      <p class="lead" id="today-lead"></p>
+    </div>
+    <div id="taste-banner"></div>
+    <div class="hero" id="hero"></div>
+    <div class="sec" id="more-sec">
+      <div class="sec-h"><h2 class="h2">Ещё варианты</h2><span class="count" id="more-count"></span></div>
+      <div class="grid2" id="more"></div>
+    </div>
+    <div class="sec" id="ai-sec" hidden>
+      <div class="sec-h"><h2 class="h2">Подбор от Claude</h2></div>
+      <div class="panel">
+        <div class="fld">
+          <label for="ai-q">Опишите, чего хочется</label>
+          <textarea class="inp" id="ai-q" maxlength="400" placeholder="Например: что-то лёгкое на двоих, не длиннее двух часов"></textarea>
+        </div>
+        <div class="row">
+          <button type="button" class="btn primary" id="ai-go">Подобрать</button>
+          <span class="note">Claude выберет до пяти позиций из каталога. Запрос расходует ваши лимиты.</span>
+        </div>
+        <div id="ai-out" aria-live="polite"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- КАТАЛОГ -->
+  <section class="view" id="v-catalog" aria-labelledby="h-cat" hidden>
+    <div>
+      <h1 class="h1" id="h-cat">Каталог</h1>
+      <p class="lead">Фильмы и сериалы 2021–2026 на разных вкладках. Сериал попадает в выборку, если хотя бы один его сезон вышел в выбранные годы.</p>
+    </div>
+    <div class="tabs" id="cat-tabs" role="tablist" aria-label="Формат">
+      <button type="button" role="tab" data-kind="film" aria-selected="true">Фильмы <span class="tab-n" id="tab-n-film"></span></button>
+      <button type="button" role="tab" data-kind="series" aria-selected="false">Сериалы <span class="tab-n" id="tab-n-series"></span></button>
+    </div>
+    <div class="row" style="margin-top:16px">
+      <button type="button" class="btn filters-toggle" id="filters-toggle" aria-expanded="false" aria-controls="filters">Фильтры <span id="filters-n"></span></button>
+    </div>
+    <div class="cat" style="margin-top:14px">
+      <form class="filters" id="filters" aria-label="Фильтры каталога">
+        <div class="fld">
+          <label for="f-q">Поиск по названию</label>
+          <input class="inp" id="f-q" type="search" autocomplete="off" placeholder="Название или оригинал">
+        </div>
+        <div class="fld">
+          <span class="lbl" id="l-year">Год выхода / сезона</span>
+          <div class="chips" id="f-years" role="group" aria-labelledby="l-year"></div>
+          <div class="two">
+            <select class="inp" id="f-y0" aria-label="Год от"></select>
+            <select class="inp" id="f-y1" aria-label="Год до"></select>
+          </div>
+        </div>
+        <div class="fld">
+          <span class="lbl" id="l-c">Страна</span>
+          <div class="chips" id="f-countries" role="group" aria-labelledby="l-c"></div>
+        </div>
+        <div class="fld">
+          <span class="lbl" id="l-g">Жанр (любой из выбранных)</span>
+          <div class="chips" id="f-genres" role="group" aria-labelledby="l-g"></div>
+        </div>
+        <div class="fld">
+          <span class="lbl" id="l-a">Доступ в России</span>
+          <div class="seg" role="radiogroup" aria-labelledby="l-a" id="f-access">
+            <label><input type="radio" name="access" value="any" checked><span>Любой</span></label>
+            <label><input type="radio" name="access" value="free"><span>Бесплатно</span></label>
+            <label><input type="radio" name="access" value="paid"><span>Платно</span></label>
+          </div>
+        </div>
+        <div class="fld">
+          <label for="f-min">Минимальный средний рейтинг</label>
+          <select class="inp" id="f-min">
+            <option value="0">Любой</option>
+            <option value="6.5">от 6,5</option>
+            <option value="7">от 7,0</option>
+            <option value="7.5">от 7,5</option>
+            <option value="8">от 8,0</option>
+            <option value="8.5">от 8,5</option>
+          </select>
+        </div>
+        <label class="chk"><input type="checkbox" id="f-hide"> Скрыть просмотренное</label>
+        <button type="button" class="btn ghost sm" id="f-reset">Сбросить фильтры</button>
+      </form>
+
+      <div>
+        <div class="bar">
+          <span class="count" id="cat-count" aria-live="polite"></span>
+          <div class="sel">
+            <div class="fld">
+              <label for="f-group">Группировка</label>
+              <select class="inp" id="f-group">
+                <option value="none">Без группировки</option>
+                <option value="year">По году</option>
+                <option value="country">По стране</option>
+                <option value="genre">По жанру</option>
+              </select>
+            </div>
+            <div class="fld">
+              <label for="f-sort">Сортировка</label>
+              <select class="inp" id="f-sort">
+                <option value="default">По умолчанию</option>
+                <option value="match">По совпадению</option>
+                <option value="avg">По среднему рейтингу</option>
+                <option value="imdb">По IMDb</option>
+                <option value="kp">По Кинопоиску</option>
+                <option value="new">Новые</option>
+                <option value="old">Старые</option>
+                <option value="title">По названию</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <label class="chk" id="split-wrap" style="margin-top:10px" hidden><input type="checkbox" id="f-split"> Сезоны отдельно (каждый сезон — под своим годом)</label>
+
+        <div id="cat-list" style="margin-top:14px"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- МОЁ -->
+  <section class="view" id="v-mine" aria-labelledby="h-mine" hidden>
+    <div>
+      <h1 class="h1" id="h-mine">Моё</h1>
+      <p class="lead">Список «Хочу посмотреть», оценки, скрытое и профиль вкусов.</p>
+    </div>
+    <div class="subnav" id="mine-nav" role="group" aria-label="Разделы «Моё»">
+      <button type="button" class="pill" data-sub="want" aria-pressed="true">Хочу посмотреть <span id="n-want"></span></button>
+      <button type="button" class="pill" data-sub="done" aria-pressed="false">Просмотренное <span id="n-done"></span></button>
+      <button type="button" class="pill" data-sub="hidden" aria-pressed="false">Скрытое <span id="n-hidden"></span></button>
+      <button type="button" class="pill" data-sub="profile" aria-pressed="false">Профиль вкусов</button>
+    </div>
+    <div id="mine-body" style="margin-top:16px"></div>
+  </section>
+</main>
+
+<footer class="foot">
+  <p class="note">Рейтинги IMDb и Кинопоиска округлены и приблизительны; «Критики» — примерная доля положительных рецензий. Описания и сводки мнений — пересказ, не цитаты. У сериалов рейтинг дан по сериалу в целом.</p>
+  <p class="note">Наличие на площадках и условия просмотра меняются часто — это ориентир. Бесплатный просмотр обычно с рекламой или ограничениями; проверяйте по ссылкам в карточке.</p>
+  <p class="note mono" id="sync-note"></p>
+</footer>
+
+<div class="overlay" id="modal" hidden>
+  <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="m-title" tabindex="-1" id="sheet"></div>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
